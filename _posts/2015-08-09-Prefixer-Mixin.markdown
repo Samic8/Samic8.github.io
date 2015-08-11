@@ -5,7 +5,33 @@ date:   2015-08-09 20:20:30
 categories: scss Sass mixin vendor prefixer prefix moz o ms 
 ---
 
-A mixin to quickly create vendor prefixers on the fly!
+**Edit:** Since writing this post I have now realized that this prefixer mixin does not have much of a use case. After prefixing a entire project with the prefixer mixin, more specifically the flex-box properties. I was only viewing the project in chrome until I had completed it, once I viewed the page in safari it was more then a little broken. 
+
+The prefixer mixin was producing
+{% highlight scss %}
+.flexbox-container {
+    -moz-display: flex;
+    -webkit-display: flex;
+    -o-display: flex;
+    display: flex;
+}
+{% endhighlight %}
+And the correct vendor prefixers are
+{% highlight scss %}
+    display: -webkit-box;
+    display: -moz-box:
+    display: -ms-flexbox:
+    display: -webkit-flex;
+    display: flex;
+{% endhighlight %}
+
+My current solution is to create separate mixins for each flex-box property. [Compass](http://compass-style.org/) also approaches [flex-box prefixing](http://compass-style.org/reference/compass/css3/flexbox/) in a very similar way.
+
+Original Post
+---
+
+####A mixin to quickly create vendor prefixer's on the fly!####
+
 {% highlight scss %}
 @mixin prefixer($property, $value, $prefixes: webkit moz ms o spec) {
     @each $prefix in $prefixes {
@@ -22,16 +48,15 @@ A mixin to quickly create vendor prefixers on the fly!
 }
 {% endhighlight %}
 
-<br>
-The simplest use of the prefixer mixin
+####The simplest use of the prefixer mixin####
 
-Input
+**Input**
 {% highlight scss %}
 .flexbox-container{
     @include prefixer(display, flex);
 }
 {% endhighlight %}
-Output 
+**Output**
 {% highlight scss %}
 .flexbox-container {
     -webkit-display: flex;
@@ -42,16 +67,15 @@ Output
 }
 {% endhighlight %}
 
-<br>
-Specifiy particular vendor prefixes
+####Specifiy particular vendor prefixes####
 
-Input
+**Input**
 {% highlight scss %}
 .flexbox-container{
     @include prefixer(display, flex, moz webkit spec);
 }
 {% endhighlight %}
-Output
+**Output**
 {% highlight scss %}
 .flexbox-container {
     -moz-display: flex;
@@ -59,5 +83,3 @@ Output
     display: flex;
 }
 {% endhighlight %}
-
-

@@ -6,6 +6,7 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://samic8.github.io" # the base hostname & protocol for your site
 twitter_username: s4mic
 github_username:  samic8
+codepen_username: Samic8
 
 # Build settings
 markdown: kramdown
