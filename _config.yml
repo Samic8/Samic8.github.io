@@ -10,3 +10,5 @@ codepen_username: Samic8
 
 # Build settings
 markdown: kramdown
+sass:
+    sass_dir: _sass
