@@ -16,8 +16,12 @@
 
     @include media-query($on-palm){
     	height: auto;
-    	width: 100%;
+    	width: 100% !important;
     	position: static;
+    }
+
+    @include media-query($on-laptop) {
+    	width: 200px;
     }
 }
 
