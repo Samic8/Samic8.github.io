@@ -5,12 +5,12 @@ date:   2017-03-12
 categories: sass colors
 ---
 
-Keeping colors consistent across an application is difficult, here are some patterns that I use that help with consistency.
+Keeping colors consistent across an application is difficult, here are some patterns that I use that help with consistency. The syntax in the code examples is in [Sass](http://sass-lang.com/).
 
 ## Variables
-When I see a new color in a design I begin with assigning it as a global sass variable. Another option would be to use a [sass map](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#maps) for colors, making looping possible (I am considering changing to this approach).
+When I need a new color, I begin with assigning it as a global sass variable. Another option would be to use a [sass map](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#maps) for colors, making looping possible (I am considering changing to this approach).
 
-The basic building block for the color system is the global variable. They consist of a consistent post-fix and a unique identifier, 'color-[type]-[name]'.
+The basic building block for the color system is the global variable. They consist of a post-fix "color", a [shade] and a unique identifier [name], 'color-[shade]-[name]'.
 
 ```scss
 $color-grey-elephant: #F1F1F1;
@@ -19,27 +19,27 @@ $color-green-leaf: #17ae00;
 ```
 <sub>Note: The syntax in the code examples is in [scss](http://sass-lang.com/).</sub>
 
-The post-fix "color" identifies the variable as being having a hex code value, next "$color-[green etc.]" gives some indication to what shade of color its is, then lastly the name is just a any unique string, provides some memorability by having a unique name.
+The post-fix "color" identifies the variable as being associated a hex code value, next the shade "$color-[green etc.]" gives some indication to what shade of color its is, then lastly the name is just a any string (get creative), providing some memorability by having a unique name.
 
-I have been called out multiple times on how ridiculous my naming can get on occasion, but at least it is memorable. These color names can then also be shared with designers, so that everyone has the same name to reference for the color. I am still experimenting with ways to share these colors to people that do not code, one attempt I have experimented with is to regex all the hex codes in a file and then use those hex codes to build a static html file, this builds our "color styleguide".
+I have been called out multiple times on how ridiculous my naming can get on occasion, but at least it is memorable. These color names can then also be shared with others, so that everyone has the same name to reference for the color. I am still experimenting with ways to share these colors to people that do not code, one attempt I have experimented with is to regex all the hex codes in a file and then use those hex codes to build a static html file, this builds a "color styleguide".
 
 ![Generate Color Styleguide](/assets/color-styleguide.png){: .center-image}
 <sub class="center-image">Link to [styleguide](/assets/color-styleguide.html)</sub>
 
 ## Aliases
 
-The second most important aspect to the color system is aliases. I could spend the energy to inform everyone that "$color-green-leaf" is used on all "Edit" buttons, or give the colors secondary names that describe exactly what it is used for.
+The second building block to the color system is aliases. Instead of repetitively informing others that "$color-green-leaf" is used on all "Edit" buttons, we can give the colors secondary names that describe exactly what it is used for.
 
 ```scss
 $color-alias-edit-button: $color-green-leaf;
 $color-alias-delete-icons: $color-red-kickflip;
 $color-alias-external-hyperlinks: $color-green-leaf;
 ```
-Its clear what each color is used for, and others can reference the code for the color alias. It also helps prevent others from creating similar colors for the same purpose, e.g. creating similar shades of green for the same edit button used in different locations.
+Similar to our standard color variable naming pattern, the aliases begins with a static identifier [color-alias]. Its clear what each color is used for, and others can reference the code for the color alias. It also helps prevent others from creating similar colors for the same purpose, e.g. creating similar shades of green for the same edit button used in different locations.
 
 ## Classes
 
-Having the colors available in sass is good, having them available for direct use in the html is helpful for speeding up development and preventing having to write new classes every time we want to use a color. To have easy access to each color and color alias I then create a class of the same name for each.
+Having the colors available in sass is a inherit benefit, making them available for direct use in the html would be convenient for speeding up development and preventing having to write new classes every time we want to use a color. To have easy access to each color and color alias I then create a class of the same name for each.
 
 ```scss
 .color-grey-elephant { color: $color-grey-elephant; }
@@ -75,7 +75,7 @@ Now we have a green background. A pre caution for using currentColor in this con
 
 Aliases in Javascript
 
-I have found it useful to keep a list of color aliases in the javascript, for use in graphs. That way the sass still owns the colors, but the js has a reference to the class name which it can then apply when needed to elements. This saves use from duplication, and when the colors change in the sass it will be reflected in the JS applied versions as well. In the following example the key is the type of data being graphed.
+I have found it useful to keep a list of color aliases in the javascript, in my case for use in graphs. That way the sass still owns the colors, but the js has a reference to the class name which it can then apply when needed to elements. This saves use from duplication, and when the colors change in the sass it will be reflected in the JS applied versions as well. In the following example the key is the type of data being graphed.
 
 ```javascript
 const classColorAliases = {
