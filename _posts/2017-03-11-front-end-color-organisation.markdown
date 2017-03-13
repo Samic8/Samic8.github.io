@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Front-end color organisation"
-date:   2017-03-12
+date:   2017-03-14
 categories: sass colors
 ---
 
@@ -73,7 +73,7 @@ Now we have a green background. A pre caution for using currentColor in this con
 </a>
 ```
 
-Aliases in Javascript
+## Aliases in Javascript
 
 I have found it useful to keep a list of color aliases in the javascript, in my case for use in graphs. That way the sass still owns the colors, but the js has a reference to the class name which it can then apply when needed to elements. This saves use from duplication, and when the colors change in the sass it will be reflected in the JS applied versions as well. In the following example the key is the type of data being graphed.
 
