@@ -23,6 +23,8 @@ The post-fix "color" identifies the variable as being having a hex code value, n
 I have been called out multiple times on how ridiculous my naming can get on occasion, but at least it is memorable. These color names can then also be shared with designers I work with, so that everyone has the same name to reference for the color. I am still experimenting with ways to share these colors to people that do not code, one attempt I have experimented with is to regex all the hex codes in a file and then use those hex codes to build a static html file, this builds our "color styleguide".
 
 ![Generate Color Styleguide]({{ site.url }}/assets/color-styleguide.png)
+![Generate Color Styleguide]({{ site.url }}/assets/color-styleguide-hover.png)
+![Generate Color Styleguide]({{ site.url }}/assets/color-styleguide-selected.png)
 
 ## Aliases
 
