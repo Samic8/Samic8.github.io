@@ -30,34 +30,44 @@ I am going to skip over how we got to this point, the svg is produced by our 'ic
 
 Once we have the symbol injected into our html we can [`use`](linkToSvgUse) our svg's. At this point we have not used angular at all (explain the benefits of using angular here).
 {% highlight html %}
-<svg class="icon" ng-style="$ctrl.svgStyles">
+<svg class="icon">
     <use xlink:href="#apartment"></use>
 </svg>
 {% endhighlight %}
 (explain xlink href)
 We are referencing the #apartment svg that is in our svg defs. The above example produces <svg class="icon" style="width: 20px; height: 20px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
 
-Now that we have got how the vanilla verison of this icon system works we can sprinkle in some angular.We are going to create a angular component which uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use a injected string `svgSymbolId` from the svgIcon controller.
+Now that we have got how the vanilla version of this icon system works we can sprinkle in some angular. We are going to create a angular component which uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use a injected string `iconName` from the svgIcon controller.
 {% highlight javascript %}
 .component('svgIcon', {
-    template: `<svg class="icon" ng-style="$ctrl.svgStyles">
-                  <use xlink:href="{$ctrl.svgSymbolId}"></use>
-              </svg>`,
+    template: '<svg class="icon">
+                  <use xlink:href="{$ctrl.iconName}"></use>
+              </svg>',
 });
 {% endhighlight %}
 
 // TODO find out how to escape double brackets and use in the example above
 
-Use iconName and iconSize as our bindings, icon name references the symbol name directly from our svg defs.
+Use iconName as  our binding, icon name references the symbol name directly from our svg defs.
 {% highlight javascript %}
 .component('svgIcon', {
-    template: '...',
+    template: '<svg class="icon">
+                  <use xlink:href="{$ctrl.iconName}"></use>
+              </svg>',
     bindings: {
         iconName: '<',
-        iconSize: '<',
     },
+    controller: function (){}
 });
 {% endhighlight %}
+
+Then we can use the component
+{% highlight html %}
+<svg-icon icon-name="'apartment'"><svg-icon>
+{% endhighlight %}
+Assuming we have our modules that contain this component setup correctly this will produce the same apartment icon <svg class="icon" style="width: 20px; height: 20px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
+
+Here is a working example of all of the concepts we have covered so far. Assumed knowledge here is the [`$onChanges` life cycle hook](https://blog.thoughtram.io/angularjs/2016/03/29/exploring-angular-1.5-lifecycle-hooks.html#onchanges) and [`ng-style`](https://docs.angularjs.org/api/ng/directive/ngStyle) used to set our icon size.
 
 <p data-height="400" data-theme-id="0" data-slug-hash="xqXzqa" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Icon)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/xqXzqa/">Angular Icon System (Icon)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
