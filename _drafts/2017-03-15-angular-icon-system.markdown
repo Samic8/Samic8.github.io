@@ -5,12 +5,11 @@ date:   2017-03-15
 categories: angular icons angular1
 ---
 
-Here is the basics behind a angular icon system that I use. It keeps the html needed to spit out a icon short, it keeps icon naming consistent.
+Here is the basics behind a angular icon system that I use. It keeps icon naming consistent and the html needed to generate a icon short.
 
 ## Icon
-A prerequisite for this icon system is that every icon has a unique name. I am going to skip over my 'icon build system' which I will explore in another post, the build system allows me to dump all of my icons as a single svg into a directory, the build system then collects all of those icons and injects them into the body. Where we start in this icon system the svg defs (maybe explain svg defs a little?) have already been injected into the body. (will do a post latter on how I do this with angular).
+A prerequisite for this icon system is that every icon has a unique name. Our icon system relies on a single svg with multiple symbols, we then [`use`](linkToSvgUse) the symbol in one or more places.
 
-The defs file that is injected into the body looks like this. (explain about external, either or)
 {% highlight html %}
 <svg style="position: absolute; width: 0; height: 0; overflow: hidden" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -25,38 +24,38 @@ The defs file that is injected into the body looks like this. (explain about ext
 {% endhighlight %}
 (find out what xmlns and xmlns:xlink are used for and why they are needed)
 
-Once we have the symbol injected into our html we can use it, using "use". At this point we dont need angular at all (explain the benfits of using angular here)
+This svg sits within the body of our html. There is another approach using [externally referenced svg files](https://css-tricks.com/svg-use-with-external-reference-take-2/). (maybe side note here about our caching).
+
+I am going to skip over how we got to this point, the svg is produced by our 'icon build system' which I will explore in another post fully, but the build system allows us to dump all of our icons as a single svg into a directory, the build system then collects all of those icons and injects them into the body.
+
+Once we have the symbol injected into our html we can [`use`](linkToSvgUse) our svg's. At this point we have not used angular at all (explain the benefits of using angular here).
 {% highlight html %}
 <svg class="icon" ng-style="$ctrl.svgStyles">
     <use xlink:href="#apartment"></use>
 </svg>
 {% endhighlight %}
 (explain xlink href)
-We are referencing the #apartment svg that is in our svg defs. Which then produces our icon.
-<svg class="icon" ng-style="$ctrl.svgStyles">
-    <use xlink:href="#apartment"></use>
-</svg>
+We are referencing the #apartment svg that is in our svg defs. The above example produces <svg class="icon" style="width: 20px; height: 20px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
 
-This where we start to piece together our angular component for producing these icons. The angular component uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use a svgSymbolId property on the components controller. (hmmm should I show the controller setup first??)
+Now that we have got how the vanilla verison of this icon system works we can sprinkle in some angular.We are going to create a angular component which uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use a injected string `svgSymbolId` from the svgIcon controller.
 {% highlight javascript %}
 .component('svgIcon', {
     template: `<svg class="icon" ng-style="$ctrl.svgStyles">
-                  <use xlink:href="{{$ctrl.svgSymbolId}}"></use>
+                  <use xlink:href="{$ctrl.svgSymbolId}"></use>
               </svg>`,
-    bindings: ...,
-    controller: ...,
 });
 {% endhighlight %}
 
-Use iconName and iconSize as our bindings
+// TODO find out how to escape double brackets and use in the example above
+
+Use iconName and iconSize as our bindings, icon name references the symbol name directly from our svg defs.
 {% highlight javascript %}
 .component('svgIcon', {
-    template: `...`,
+    template: '...',
     bindings: {
         iconName: '<',
         iconSize: '<',
     },
-    controller: ...,
 });
 {% endhighlight %}
 
