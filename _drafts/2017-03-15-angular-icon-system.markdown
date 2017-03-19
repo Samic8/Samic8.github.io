@@ -143,7 +143,8 @@ Complete example
 <p data-height="400" data-theme-id="0" data-slug-hash="VpMdzO" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Aliases)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/VpMdzO/">Angular Icon System (Aliases)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-## Bounus - Repeat
+## Bounus 
+### ng-repeat
 With our icon system wired up to accept one way bindings we can use `ng-reapeat` to produce dynamic lists of icons. In our root controller we can set up a array of iconName (in this example, but we could also use iconAlias)
 
 {% highlight javascript %}
@@ -179,10 +180,43 @@ Which procudes our icons
     </svg>
 </div>
 
+### Colors
+This icon system can syncornoise? with the [color system]({% post_url 2017-03-11-front-end-color-organisation %}) outlined in my previous post.
+
+We can use [`currentColor`](link to article) as the fill property on the svg inside our svgIcon component and then on the components element use a color class, then the svg will inherit our color.
+
+{% highlight css %}
+.icon { <!-- Class to be used on the svg within the svgIcon template -->
+    fill: currentColor;
+}
+{% endhighlight %}
+Note: That the icons we are using in these examples are fill only icons. This sort of color inheritence will prove difficult if we needed to use icons with multiple colors, this is a limitation. 
+
+### Icon sizing
+In our icon system we are using icons that have equal width and height. So that we can similtaously change the width and height with a single value we can set our icons width and height properties to 1em. The icons will now equal the current font-size, meanining if we set a font-size of 20px on the parent element the svg will inherit the current font size as both its width and height.
+
+{% highlight css %}
+.icon {
+    ...
+    width: 1em;
+    height: 1em;
+}
+{% endhighlight %}
+
+To use this with our icon system we could simply use inline styling
+
+{% highlight html %}
+<svg-icon icon-name="appartment" style="font-size: 20px"><svg-icon>
+{% endhighlight %}
+
+But if we want to do this a little cleaner we could add a `iconSize` binding to our component and then apply the font-size in a inline style within the component
+{% highlight html %}
+<svg-icon icon-name="appartment" icon-size="20"><svg-icon>
+{% endhighlight %}
+
+Complete example with everything we have covered
 <p data-height="400" data-theme-id="0" data-slug-hash="MpvGjy" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Complete)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/MpvGjy/">Angular Icon System (Repeat)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-
-## Bounus = Colors
 
 TODOs
 Injecting svg defs in to the file
@@ -193,6 +227,7 @@ assumed knowledge. angular components etc.
 List some of the es6 concepts used
 Note that codepen examples are a little more complicated
 Remove 'now' and 'here' extra w3ords.
+link post to code pen collection
 
 Try to keep short, I know I dont have a long attention span, maybe just touch on some of these topics and explore them furthur in another post
 
