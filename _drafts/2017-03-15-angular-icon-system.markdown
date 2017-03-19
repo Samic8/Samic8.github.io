@@ -73,12 +73,116 @@ Here is a working example of all of the concepts we have covered so far. Assumed
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
 ## Aliases
+
+Aliases are the most powerfull part of this component, it helps keep icons consistent across our application. It allows icons unqiue names to be independent of their usage names, allows the same icon to be used for multiple use cases with different names. Allows replacing of icons with ease without having to do a find and replace. Now lets get into how we go about get this working for our icon system.
+
+We want to add a extra binding to our `svgIcon` component called `aliasName`. Here we will use one-way binding `<`, which allows us to watch for changes and change icons on the fly.
+{% highlight javascript %}
+.component('svgIcon', {
+    template: '<svg class="icon">
+                  <use xlink:href="{$ctrl.iconName}"></use>
+              </svg>',
+    bindings: {
+        iconName: '<',
+        iconAlias: '<',
+    },
+    controller: function (){}
+});
+{% endhighlight %}
+
+For our apartment icon, lets set up a alias name of 'coporation'. So that we can use the component like so
+{% highlight html %}
+<svg-icon icon-alias="'coporation'"><svg-icon>
+{% endhighlight %}
+
+We need to write some extra javascript in our controller to get this working, so far our controller has been empty. First we want to create a 'alias' constant object, the holds our alias/icon name assiociations 
+
+{% highlight javascript %}
+function svgIconController() {
+	const ctrl = this;
+	
+	const aliases = {
+		corporation: 'apartment',
+		...
+	};
+}
+{% endhighlight %}
+
+Now that we have a string that does not directly assiocate with a symbol in our svgs defs, we want to make sure that we translate input string to a string that is actually assiosiated with a symbol.
+
+Lets change the template so it is not directly using our 'iconName' binding
+{% highlight javascript %}
+.component('svgIcon', {
+    template: '<svg class="icon">
+                  <use xlink:href="{$ctrl.svgSymbolId}"></use>
+              </svg>',
+    bindings: {...},
+    controller: ...
+});
+{% endhighlight %}
+
+Now we want to get the symbol id from the assoicated 'aliasName' `aliases[aliasName]` and set the result to the `svgSymbolId`. Our component is multipurpose as it accepts both 'iconName' and 'aliasName', we are assuming the developer will use either/or and not both.
+{% highlight javascript %}
+function svgIconController() {
+	const ctrl = this;
+	
+	const aliases = {...};
+	
+	this.$onChanges = $onChanges;
+	
+	function $onChanges({iconName, aliasName, iconSize}) {
+		ctrl.svgSymbolId = `#${iconName.currentValue ? iconName.currentValue : aliases[aliasName.currentValue]}`;
+	}
+	
+}
+{% endhighlight %}
+
+Usage of ```<svg-icon icon-alias="'coporation'"><svg-icon>``` will produce <svg class="icon" style="width: 20px; height: 20px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
+
+Complete example
 <p data-height="400" data-theme-id="0" data-slug-hash="VpMdzO" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Aliases)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/VpMdzO/">Angular Icon System (Aliases)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-## Repeat
+## Bounus - Repeat
+With our icon system wired up to accept one way bindings we can use `ng-reapeat` to produce dynamic lists of icons. In our root controller we can set up a array of iconName (in this example, but we could also use iconAlias)
+
+{% highlight javascript %}
+function rootCtrl($scope) {
+    $scope.iconsToRepeat = [
+        'cash-dollar',
+        'bubbles',
+        'calculator',
+        'apartment'
+    ];
+}
+{% endhighlight %}
+
+{% highlight html %}
+<div ng-repeat="iconName in iconsToRepeat">
+    <svg-icon icon-name="iconName"></svg-icon>
+</div>
+{% endhighlight %}
+
+Which procudes our icons
+<div style="text-align: center">	
+    <svg style="font-size: 20px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cash-dollar"></use>
+    </svg>
+    <svg style="font-size: 20px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#bubbles"></use>
+    </svg>
+    <svg style="font-size: 20px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#calculator"></use>
+    </svg>
+    <svg style="font-size: 20px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#apartment"></use>
+    </svg>
+</div>
+
 <p data-height="400" data-theme-id="0" data-slug-hash="MpvGjy" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Complete)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/MpvGjy/">Angular Icon System (Repeat)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+## Bounus = Colors
 
 TODOs
 Injecting svg defs in to the file
@@ -86,6 +190,9 @@ External svg defs
 Link about using color aliases from other post
 add links and highlight keys words
 assumed knowledge. angular components etc.
+List some of the es6 concepts used
+Note that codepen examples are a little more complicated
+Remove 'now' and 'here' extra w3ords.
 
 Try to keep short, I know I dont have a long attention span, maybe just touch on some of these topics and explore them furthur in another post
 
@@ -105,6 +212,11 @@ Try to keep short, I know I dont have a long attention span, maybe just touch on
             <title>calculator</title>
             <path d="M16.5 20h-14c-.827 0-1.5-.673-1.5-1.5v-17C1 .673 1.673 0 2.5 0h14c.827 0 1.5.673 1.5 1.5v17c0 .827-.673 1.5-1.5 1.5zM2.5 1a.5.5 0 0 0-.5.5v17a.5.5 0 0 0 .5.5h14a.5.5 0 0 0 .5-.5v-17a.5.5 0 0 0-.5-.5h-14z"></path>
             <path d="M15.5 7h-12a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zM4 6h11V3H4v3zM15.5 8h-12a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-.5 3h-2V9h2v2zm-8 1h2v2H7v-2zm-1 2H4v-2h2v2zm1-3V9h2v2H7zm2 4v2H7v-2h2zm1 0h2v2h-2v-2zm2-1h-2v-2h2v2zm-2-3V9h2v2h-2zM6 9v2H4V9h2zm-2 6h2v2H4v-2zm9 2v-5h2v5h-2z"></path>
+        </symbol>
+        <symbol viewBox="0 0 20 20" id="cash-dollar">
+            <title>cash-dollar</title>
+            <path d="M18.5 18H.5a.5.5 0 0 1-.5-.5v-10A.5.5 0 0 1 .5 7h18a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5zM1 17h17V8H1v9z"></path>
+            <path d="M11.5 12H8v-1h3.5a.5.5 0 0 0 0-1H10v-.5a.5.5 0 0 0-1 0v.5H7.5a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5H11v1H7.5a.5.5 0 0 0 0 1H9v.5a.5.5 0 0 0 1 0V15h1.5a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5zM17.5 6h-16a.5.5 0 0 1 0-1h16a.5.5 0 0 1 0 1zM16.5 4h-14a.5.5 0 0 1 0-1h14a.5.5 0 0 1 0 1z"></path>
         </symbol>
     </defs>
 </svg>
