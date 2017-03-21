@@ -1,11 +1,26 @@
 ---
 layout: post
 title:  "Angular Icon System"
-date:   2017-03-15
+date:   2017-03-21 +1000
 categories: angular icons angular1
 ---
 
 This is a example of the angular icon system that I use, it's aim is to keep icon naming consistent and the html needed to generate a icon small.
+
+<div style="text-align: center">	
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cash-dollar"></use>
+    </svg>
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#bubbles"></use>
+    </svg>
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#calculator"></use>
+    </svg>
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#apartment"></use>
+    </svg>
+</div>
 
 ## Displaying a icon using SVG symbols
 A prerequisite for the icon system is that every icon has a unique name. The icon system relies on a single SVG with multiple symbols, we then [`<use>`](https://developer.mozilla.org/en/docs/Web/SVG/Element/use) the symbol in one or more places.
@@ -146,13 +161,16 @@ function svgIconController() {
 {% endhighlight %}
 <sub>[Destructuring assignment](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) is used as our function arguments</sub>
 
-Usage of ```<svg-icon icon-alias="'building'"><svg-icon>``` will produce <svg class="icon" style="width: 20px; height: 20px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
-
+Usage of ```<svg-icon icon-alias="'building'"><svg-icon>``` will produce 
+<div style="text-align:center">
+    <svg class="icon" style="width: 40px; height: 40px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
+</div>
 
 <p data-height="400" data-theme-id="0" data-slug-hash="VpMdzO" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Aliases)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/VpMdzO/">Angular Icon System (Aliases)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
 ## Bonus 
+
 ### ng-repeat
 With our icon system wired up to accept one way bindings we can use `ng-repeat` to produce dynamic lists of icons. In our root controller we can set up a array of iconName (we could also use iconAlias)
 
@@ -175,16 +193,16 @@ function rootCtrl($scope) {
 
 Which produces our icons
 <div style="text-align: center">	
-    <svg style="font-size: 20px; width: 1em; height: 1em;">
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cash-dollar"></use>
     </svg>
-    <svg style="font-size: 20px; width: 1em; height: 1em;">
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#bubbles"></use>
     </svg>
-    <svg style="font-size: 20px; width: 1em; height: 1em;">
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#calculator"></use>
     </svg>
-    <svg style="font-size: 20px; width: 1em; height: 1em;">
+    <svg style="font-size: 40px; width: 1em; height: 1em;">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#apartment"></use>
     </svg>
 </div>
@@ -214,15 +232,15 @@ In our icon system we are using icons that have equal width and height. So that 
 
 To use this with our icon system we could  use inline styling
 {% highlight html %}
-<svg-icon icon-name="appartment" style="font-size: 20px"><svg-icon>
+<svg-icon icon-name="apartment" style="font-size: 20px"><svg-icon>
 {% endhighlight %}
 
 But if we want to do this a little cleaner we could add a `iconSize` binding to our [component](https://docs.angularjs.org/guide/component) and then apply the font-size in a inline style within the component
 {% highlight html %}
-<svg-icon icon-name="appartment" icon-size="20"><svg-icon>
+<svg-icon icon-name="apartment" icon-size="20"><svg-icon>
 {% endhighlight %}
 
-Complete example with everything we have covered
+## Complete example
 <p data-height="400" data-theme-id="0" data-slug-hash="MpvGjy" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Complete)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/MpvGjy/">Angular Icon System (Repeat)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
