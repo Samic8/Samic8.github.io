@@ -42,7 +42,7 @@ We are referencing the 'apartment' SVG that is in our SVG symbols. The above exa
 </div>
 
 ## Building a icon component
-Now that we have got the basic version of this icon system working we can begin to build on top with angular. We are going to create a angular component which uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use the injected string `iconName` from the our `svgIcon` component.
+Now that we have got the basic version of this icon system working we can begin to build on top with angular. We are going to create a angular [component](https://docs.angularjs.org/guide/component) which uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use the injected string `iconName` from the our `svgIcon` component.
 {% highlight javascript %}
 .component('svgIcon', {
     template: '<svg class="icon">
@@ -80,9 +80,11 @@ Here is a working example of all of the concepts we have covered so far. There a
 
 ## Aliases
 
-Aliases are the most powerful part of our icon system, it helps keep icons consistent across our application. Aliases provide a way for an icons unique name to be independent of their usage name, allowing the same icon to be used for multiple use cases with different names. Another benefit is being able to replace icons with without having to do a find and replace. Now lets get into how we go about get aliases working for our icon system.
+Aliases are the most powerful part of this icon system, it helps keep icons consistent across our application. Aliases provide a way for an icons unique name to be independent of their usage name, allowing the same icon to be used for multiple use cases with different naming. 
 
-We want to add a extra binding to our `svgIcon` [`component`](https://docs.angularjs.org/guide/component) called `aliasName`. Here we will use [`one-way binding (<)](https://docs.angularjs.org/guide/component), which allows us to watch for changes and update icons on the fly.
+Another benefit is being able to replace icons with without having to do a find and replace. Now lets get into how we go about getting aliases working for our icon system.
+
+We want to add a extra binding to our `svgIcon` [component](https://docs.angularjs.org/guide/component) called `aliasName`. Here we will use one-way binding (<), which allows us to watch for changes and update icons on the fly.
 {% highlight javascript %}
 .component('svgIcon', {
     template: '<svg class="icon">
@@ -96,12 +98,12 @@ We want to add a extra binding to our `svgIcon` [`component`](https://docs.angul
 });
 {% endhighlight %}
 
-For our apartment icon, lets set up a alias name of 'building'. So that we can use the component like so
+For our apartment icon, lets set up a alias name of 'building'. So that we can use the [component](https://docs.angularjs.org/guide/component) like so
 {% highlight html %}
 <svg-icon icon-alias="'building'"><svg-icon>
 {% endhighlight %}
 
-We need to write some extra javascript in our controller to get this working, so far our controller has been empty. First we want to create a 'alias' object, the holds our alias/icon name associations.
+We need to write some extra javascript in our controller to get this working, so far our controller has been empty. First we want to create a `aliases` object, the holds our alias/icon name associations.
 
 {% highlight javascript %}
 function svgIconController() {
@@ -114,7 +116,7 @@ function svgIconController() {
 }
 {% endhighlight %}
 
-Now that we have a string that does not directly associate with a symbol in our svg, we want to make sure that we translate input to a string that is actually associated with a symbol.
+Now that we have a string that does not directly associate with a symbol in our svg, we want to make sure that we translate `aliasName` input to a string that is actually associated with a symbol.
 
 Lets change the template so it is not directly using our 'iconName' binding
 {% highlight javascript %}
@@ -127,7 +129,7 @@ Lets change the template so it is not directly using our 'iconName' binding
 });
 {% endhighlight %}
 
-Now we want to get the symbol id from the associated 'aliasName' `aliases[aliasName]` and set the result to the `svgSymbolId`. Our component is now multipurpose as it accepts both 'iconName' and 'aliasName', we are assuming the developer will use either/or and not both (our component could be extended to error etc.)
+Now we want to get the symbol id from the associated 'aliasName' `aliases[aliasName]` and set the result to the `svgSymbolId`. Our [component](https://docs.angularjs.org/guide/component) is now multipurpose as it accepts both 'iconName' and 'aliasName', we are assuming the developer will use either/or and not both (our [component](https://docs.angularjs.org/guide/component) could be extended to error etc.)
 {% highlight javascript %}
 function svgIconController() {
 	const ctrl = this;
@@ -190,7 +192,7 @@ Which produces our icons
 ### Colors
 This icon system can be used with the [color system]({% post_url 2017-03-11-front-end-color-organisation %}) outlined in my previous post.
 
-We can use [`currentColor`](https://developer.mozilla.org/en/docs/Web/CSS/color_value#currentcolor_keyword) as the fill property on the svg inside our `svgIcon` component and then on the components element use a color class, the svg will inherit our color.
+We can use [`currentColor`](https://developer.mozilla.org/en/docs/Web/CSS/color_value#currentcolor_keyword) as the fill property on the svg inside our `svgIcon` [component](https://docs.angularjs.org/guide/component) and then on the components element use a color class, the svg will inherit our color.
 
 {% highlight css %}
 .icon {
@@ -215,7 +217,7 @@ To use this with our icon system we could  use inline styling
 <svg-icon icon-name="appartment" style="font-size: 20px"><svg-icon>
 {% endhighlight %}
 
-But if we want to do this a little cleaner we could add a `iconSize` binding to our component and then apply the font-size in a inline style within the component
+But if we want to do this a little cleaner we could add a `iconSize` binding to our [component](https://docs.angularjs.org/guide/component) and then apply the font-size in a inline style within the component
 {% highlight html %}
 <svg-icon icon-name="appartment" icon-size="20"><svg-icon>
 {% endhighlight %}
