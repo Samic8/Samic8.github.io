@@ -7,10 +7,10 @@ categories: angular icons angular1
 
 This is a example of the angular icon system that I use, it's aim is to keep icon naming consistent and the html needed to generate a icon small.
 
-## Icon
-A prerequisite for the icon system is that every icon has a unique name. The icon system relies on a single svg with multiple symbols, we then [`<use>`](https://developer.mozilla.org/en/docs/Web/SVG/Element/use) the symbol in one or more places.
+## Displaying a icon using SVG symbols
+A prerequisite for the icon system is that every icon has a unique name. The icon system relies on a single SVG with multiple symbols, we then [`<use>`](https://developer.mozilla.org/en/docs/Web/SVG/Element/use) the symbol in one or more places.
 
-This svg is prepended to the body of our html (Internal references). A Internal svg is one approach that would work with this icon system, using [externally referenced svg files](https://css-tricks.com/svg-use-with-external-reference-take-2/) is another option.
+This SVG is prepended to the body of our html. We are using a Internally referenced SVG in this example another  approach that would work with this icon system is to use [externally referenced svg files](https://css-tricks.com/svg-use-with-external-reference-take-2/).
 {% highlight html %}
 <svg style="position: absolute; width: 0; height: 0; overflow: hidden">
     <defs>
@@ -24,9 +24,11 @@ This svg is prepended to the body of our html (Internal references). A Internal 
 </svg>
 {% endhighlight %}
 
-I am going to skip over how we got to this point where the svgs are already in the body. It would be tedious and messy to manage our svg symbols by having them staticly in the body of our html, instead I produce the svg with a 'icon build system' which I will explore in another post, the build system allows me to place all of my icons as a single svg's into a directory, the build system then collects all of those icons and injects them into the body.
+I am going to skip over how we got to this point where the SVG's are already in the document body. It would be tedious to manage our svg symbols by having them statically in the body of our html.
 
-Once we have the svg symbols injected into our html we can [`<use>`](https://developer.mozilla.org/en/docs/Web/SVG/Element/use) our svg's.
+ With this icon system in its real world usage I concatenate the SVG's with a 'icon build system' which I will explore in another post, the build system allows me to place all of my icons as single SVG's into a directory, the build system then collects all of those icons and injects them into the body.
+
+Once we have the SVG symbols injected into our html we can [`<use>`](https://developer.mozilla.org/en/docs/Web/SVG/Element/use) our SVG's.
 {% highlight html %}
 <svg class="icon">
     <use xlink:href="#apartment"></use>
@@ -34,24 +36,26 @@ Once we have the svg symbols injected into our html we can [`<use>`](https://dev
 {% endhighlight %}
 (explain xlink href)
 
-We are referencing the 'apartment' svg that is in our svg symbols. The above example produces our icon  <svg style="width: 20px; height: 20px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
+We are referencing the 'apartment' SVG that is in our SVG symbols. The above example produces our 'apartment' icon  
+<div style="text-align: center;">
+    <svg style="width: 40px; height: 40px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
+</div>
 
-Now that we have got how the non-angular version of this icon system works we can begin to build on top with angular. We are going to create a angular component which uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use a injected string `iconName` from the svgIcon controller.
+## Building a icon component
+Now that we have got the basic version of this icon system working we can begin to build on top with angular. We are going to create a angular component which uses a variation of the above html as its template. Instead of the hard coded '#apartment' we use the injected string `iconName` from the our `svgIcon` component.
 {% highlight javascript %}
 .component('svgIcon', {
     template: '<svg class="icon">
-                  <use xlink:href="{$ctrl.iconName}"></use>
+                  <use xlink:href="{% raw %}{{$ctrl.iconName}}{% endraw %}"></use>
               </svg>',
 });
 {% endhighlight %}
 
-// TODO find out how to escape double brackets and use in the example above
-
-Lets use 'iconName' as our binding, iconName references the symbol `ID` directly from our svg defs.
+Lets define `iconName` as a binding, `iconName` references the symbol `ID` directly from our svg defs.
 {% highlight javascript %}
 .component('svgIcon', {
     template: '<svg class="icon">
-                  <use xlink:href="{$ctrl.iconName}"></use>
+                  <use xlink:href="{% raw %}{{$ctrl.iconName}}{% endraw %}"></use>
               </svg>',
     bindings: {
         iconName: '<',
@@ -60,12 +64,14 @@ Lets use 'iconName' as our binding, iconName references the symbol `ID` directly
 });
 {% endhighlight %}
 
-Our component usage to produce our 'apartment' icon then only needs to following html.
+To produce our 'apartment' icon we then only need the following html. Assuming we have our [`angular modules`](https://docs.angularjs.org/guide/module) wired up correctly.
 {% highlight html %}
 <svg-icon icon-name="'apartment'"><svg-icon>
 {% endhighlight %}
 
-Assuming we have our [`angular modules`](https://docs.angularjs.org/guide/module) that contain this component setup correctly this will produce the our 'apartment' icon <svg class="icon" style="width: 20px; height: 20px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
+<div style="text-align: center;">
+    <svg class="icon" style="width: 40px; height: 40px; display: inline-block;"><use xlink:href="#apartment"></use></svg>
+</div>
 
 Here is a working example of all of the concepts we have covered so far. There are some extras in the example that I have left out so far for simplicity. Assumed knowledge here is the [`$onChanges` life cycle hook](https://blog.thoughtram.io/angularjs/2016/03/29/exploring-angular-1.5-lifecycle-hooks.html#onchanges) and [`ng-style`](https://docs.angularjs.org/api/ng/directive/ngStyle) used to set our icon size.
 
@@ -80,7 +86,7 @@ We want to add a extra binding to our `svgIcon` [`component`](https://docs.angul
 {% highlight javascript %}
 .component('svgIcon', {
     template: '<svg class="icon">
-                  <use xlink:href="{$ctrl.iconName}"></use>
+                  <use xlink:href="{% raw %}{{$ctrl.iconName}}{% endraw %}"></use>
               </svg>',
     bindings: {
         iconName: '<',
@@ -114,7 +120,7 @@ Lets change the template so it is not directly using our 'iconName' binding
 {% highlight javascript %}
 .component('svgIcon', {
     template: '<svg class="icon">
-                  <use xlink:href="{$ctrl.svgSymbolId}"></use>
+                  <use xlink:href="{% raw %}{{$ctrl.svgSymbolId}}{% endraw %}"></use>
               </svg>',
     bindings: {...},
     controller: ...
@@ -219,18 +225,7 @@ Complete example with everything we have covered
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
 TODOs
-Injecting svg defs in to the file
-External svg defs
-Link about using color aliases from other post
-add links and highlight keys words
-assumed knowledge. angular components etc.
-List some of the es6 concepts used
-Note that codepen examples are a little more complicated
-Remove 'now' and 'here' extra w3ords.
 link post to code pen collection
-Update color names 'color-grey-etc'
-
-Try to keep short, I know I dont have a long attention span, maybe just touch on some of these topics and explore them furthur in another post
 
 <svg style="position: absolute; width: 0; height: 0; overflow: hidden">
     <defs>
