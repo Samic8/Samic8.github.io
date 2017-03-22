@@ -220,7 +220,7 @@ We can use [`currentColor`](https://developer.mozilla.org/en/docs/Web/CSS/color_
 <sub>Note: That the icons we are using in these examples are fill only icons. This sort of color inheritance will prove difficult if we needed to use icons with multiple colors, this is a limitation.<sub>
 
 ### Icon sizing
-In our icon system we are using icons that have equal width and height. So that we can simultaneously change the width and height with a single value we can set our icons width and height properties to `1em`. The icons will now equal the current font-size, meaning if we set a font-size of 20px on the parent element the svg will inherit the current font size as both its width and height.
+In this icon system we are using icons that have equal width and height. Therefore being able to simultaneously change the width and height with a single value, we can set our icons width and height properties to `1em`. The icons will now equal the current font-size, meaning if we set a font-size of 20px on the parent element or directly the svg will use the current font size as both its width and height.
 
 {% highlight css %}
 .icon {
@@ -230,12 +230,12 @@ In our icon system we are using icons that have equal width and height. So that 
 }
 {% endhighlight %}
 
-To use this with our icon system we could  use inline styling
+To use this with our icon system we could use inline styling
 {% highlight html %}
 <svg-icon icon-name="apartment" style="font-size: 20px"><svg-icon>
 {% endhighlight %}
 
-But if we want to do this a little cleaner we could add a `iconSize` binding to our [component](https://docs.angularjs.org/guide/component) and then apply the font-size in a inline style within the component
+If we want to do this a little cleaner we could add a `iconSize` binding to our [component](https://docs.angularjs.org/guide/component) and then apply the font-size in a inline style within the component
 {% highlight html %}
 <svg-icon icon-name="apartment" icon-size="20"><svg-icon>
 {% endhighlight %}
