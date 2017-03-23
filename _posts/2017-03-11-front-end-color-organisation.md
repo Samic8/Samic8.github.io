@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Front-end color organisation"
+title:  "Color Organization"
 date:   2017-03-14 +1000
 categories: sass colors
 ---
