@@ -244,6 +244,8 @@ If we want to do this a little cleaner we could add a `iconSize` binding to our 
 <p data-height="400" data-theme-id="0" data-slug-hash="MpvGjy" data-default-tab="html,result" data-user="Samic8" data-embed-version="2" data-pen-title="Angular Icon System (Complete)" class="codepen">See the Pen <a href="https://codepen.io/Samic8/pen/MpvGjy/">Angular Icon System (Repeat)</a> by Sam Dawson (<a href="http://codepen.io/Samic8">@Samic8</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
+Link to post on this icon system being [rebuilt for angular 2]({% post_url 2017-03-24-angular-2-icon-system %})
+
 <svg style="position: absolute; width: 0; height: 0; overflow: hidden">
     <defs>
         <symbol viewBox="0 0 20 20" id="apartment">
